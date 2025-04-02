@@ -302,7 +302,7 @@ Graph Algorithms::kruskal() {
         if (u < 0 || u >= n) {
             throw "Invalid vertex in find!";
         }
-        int originalU = u;
+       
         while (u != parent[u]) {
             u = parent[u];
             if (u < 0 || u >= n) {
