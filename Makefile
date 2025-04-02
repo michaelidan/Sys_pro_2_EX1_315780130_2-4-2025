@@ -1,12 +1,8 @@
 # michael9090124@gmail.com
 # Makefile for System Programming 2 - Ex1
 
-# מהדר C++ (ודא שהנתיב תקין אם g++ לא ב-PATH)
 CXX := g++
-# במקרה שלך, ייתכן שתצטרך את הנתיב המלא:
-# CXX := C:/Strawberry/c/bin/g++.exe
-
-# דגלי מהדר (Compiler Flags)
+# דגלי קומפיילר (Compiler Flags)
 # -std=c++17 : שימוש בתקן C++17
 # -Wall       : הפעלת כל האזהרות
 # -Werror     : (אופציונלי) התייחסות לאזהרות כשגיאות
@@ -33,12 +29,11 @@ OBJS_LIB := $(SRCS_LIB:.cpp=.o) # Graph.o Algorithms.o DataStructures.o
 OBJ_MAIN := $(SRC_MAIN:.cpp=.o) # main.o
 OBJ_TEST := $(SRC_TEST:.cpp=.o) # tests.o
 
-# שמות קבצי ההרצה
+# שמות קבצי ההרצה (הסיומת .exe לא מזיקה בלינוקס)
 EXEC_MAIN := main.exe
 EXEC_TEST := runTests.exe
 
-# פקודת מחיקה (rm -f אמור לעבוד גם ב-MinGW, -f מתעלם משגיאות אם קובץ לא קיים)
-# אם זה לא עובד, אפשר לנסות: RM := del /Q
+# פקודת מחיקה (rm -f אמור לעבוד גם ב-MinGW וגם בלינוקס)
 RM := rm -f
 
 
@@ -50,7 +45,7 @@ all: $(EXEC_MAIN) $(EXEC_TEST)
 # המטרה 'Main' כפי שנדרש במטלה
 Main: $(EXEC_MAIN)
 	@echo "Running main program..."
-	.\$(EXEC_MAIN)
+	./$(EXEC_MAIN) # <--- שינוי כאן מ- .\ ל- ./
 
 # בניית קובץ ההרצה הראשי
 $(EXEC_MAIN): $(OBJ_MAIN) $(OBJS_LIB)
@@ -60,7 +55,7 @@ $(EXEC_MAIN): $(OBJ_MAIN) $(OBJS_LIB)
 # המטרה 'test' כפי שנדרש במטלה
 test: $(EXEC_TEST)
 	@echo "Running tests..."
-	.\$(EXEC_TEST)
+	./$(EXEC_TEST) # <--- שינוי כאן מ- .\ ל- ./
 
 # בניית קובץ ההרצה של הבדיקות
 $(EXEC_TEST): $(OBJ_TEST) $(OBJS_LIB)
@@ -70,10 +65,10 @@ $(EXEC_TEST): $(OBJ_TEST) $(OBJS_LIB)
 # המטרה 'valgrind' כפי שנדרש במטלה
 # !!! חשוב: Valgrind הוא כלי של לינוקס. מטרה זו תעבוד רק אם אתה מריץ make
 # !!! בסביבת לינוקס (כמו WSL) שבה valgrind מותקן, וקימפלת את הקוד *עבור לינוקס*.
-# !!! היא לא תעבוד ישירות על Windows.
 valgrind: $(EXEC_MAIN)
 	@echo "Running valgrind (requires Linux environment and valgrind installed)..."
-	valgrind --leak-check=full .\$(EXEC_MAIN)
+	# הערה: valgrind קרס עם שגיאה פנימית בסביבת הבדיקה שלנו (אובונטו ב-VirtualBox)
+	valgrind --leak-check=full ./$(EXEC_MAIN) # <--- שינוי כאן מ- .\ ל- ./
 
 # כלל גנרי לבניית קבצי אובייקט (.o) מקבצי מקור (.cpp)
 %.o: %.cpp
